@@ -1,9 +1,8 @@
 package main
 
-import (
-	"fmt"
-)
+import "taurl/src"
 
 func main() {
-	fmt.Println("Hello, world!")
+	app := src.Default()
+	app.Run()
 }
