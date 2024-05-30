@@ -20,7 +20,29 @@ func (app *App) ApiGetUrl(c *gin.Context) {
 		return
 	}
 
-	url, err := app.Db.internal_get_url(json.Url)
+	url, err := app.Db.get_url(json.Url)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Url was not found."})
+		return
+	}
+
+	c.JSON(http.StatusOK, url)
+}
+
+type UrlFromIdReq struct {
+	UniqueId string `binding:"required"`
+}
+
+// api endpoint to get an already existing url using its unique id, can return 404
+func (app *App) ApiGetUrlFromId(c *gin.Context) {
+	// validate req body.
+	var json UrlFromIdReq
+	if err := c.ShouldBindQuery(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	url, err := app.Db.get_url_from_id(json.UniqueId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "Url was not found."})
 		return
@@ -45,7 +67,7 @@ func (app *App) ApiSetUrl(c *gin.Context) {
 		return
 	}
 
-	new_url, err := app.Db.internal_set_url(json.Url)
+	new_url, err := app.Db.set_url(json.Url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to parse url."})
 		return
