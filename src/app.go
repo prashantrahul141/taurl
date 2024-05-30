@@ -25,7 +25,7 @@ func (app *App) MountRoutes() {
 	app.Router.GET("/", app.Index)
 
 	// endpoint for actual redirection.
-	app.Router.GET("/:unique_id", app.Redirect)
+	app.Router.GET("/:id", app.Redirect)
 
 	// api routes
 	api := app.Router.Group("/api")
