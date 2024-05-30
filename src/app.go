@@ -4,11 +4,12 @@ import (
 	"log/slog"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type App struct {
-	Router     *gin.Engine
-	UrlManager UrlsManager
+	Router *gin.Engine
+	Db     *gorm.DB
 }
 
 // Inits an app.
@@ -21,14 +22,24 @@ func (app *App) Init() {
 
 // mount routes
 func (app *App) MountRoutes() {
+	// public user interface endpoints.
 	app.Router.GET("/", Index)
-	app.Router.GET("/get", app.UrlManager.GetUrl)
-	app.Router.POST("/set", app.UrlManager.SetUrl)
+
+	// endpoints for htmx
+
+	// endpoint for actual redirection.
+
+	// api routes
+	api := app.Router.Group("/api")
+	{
+		api.GET("/get", app.ApiGetUrl)
+		api.POST("/set", app.ApiSetUrl)
+	}
 }
 
 // creates and inits a new app.
 func Default() App {
-	app := App{Router: gin.Default(), UrlManager: UrlsManager{Db: SetupDbInstance()}}
+	app := App{Router: gin.Default(), Db: SetupDbInstance()}
 	app.Init()
 	app.MountRoutes()
 	return app
