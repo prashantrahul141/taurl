@@ -25,12 +25,13 @@ func (app *App) MountRoutes() {
 	app.Router.GET("/", app.Index)
 
 	// endpoint for actual redirection.
-	app.Router.GET("/:redirection_id")
+	app.Router.GET("/:unique_id", app.Redirect)
 
 	// api routes
 	api := app.Router.Group("/api")
 	{
 		api.GET("/get", app.ApiGetUrl)
+		api.GET("/get_from_id", app.ApiGetUrlFromId)
 		api.POST("/set", app.ApiSetUrl)
 	}
 }
