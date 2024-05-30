@@ -4,12 +4,11 @@ import (
 	"log/slog"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type App struct {
 	Router *gin.Engine
-	Db     *gorm.DB
+	Db     DbManager
 }
 
 // Inits an app.
@@ -23,9 +22,10 @@ func (app *App) Init() {
 // mount routes
 func (app *App) MountRoutes() {
 	// public user interface endpoints.
-	app.Router.GET("/", Index)
+	app.Router.GET("/", app.Index)
 
 	// endpoint for actual redirection.
+	app.Router.GET("/:redirection_id")
 
 	// api routes
 	api := app.Router.Group("/api")
@@ -37,7 +37,7 @@ func (app *App) MountRoutes() {
 
 // creates and inits a new app.
 func Default() App {
-	app := App{Router: gin.Default(), Db: SetupDbInstance()}
+	app := App{Router: gin.Default(), Db: SetupDb()}
 	app.Init()
 	app.MountRoutes()
 	return app

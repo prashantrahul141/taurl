@@ -20,7 +20,7 @@ func (app *App) ApiGetUrl(c *gin.Context) {
 		return
 	}
 
-	url, err := app.internal_get_url(json.Url)
+	url, err := app.Db.internal_get_url(json.Url)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "Url was not found."})
 		return
@@ -45,7 +45,7 @@ func (app *App) ApiSetUrl(c *gin.Context) {
 		return
 	}
 
-	new_url, err := app.internal_set_url(json.Url)
+	new_url, err := app.Db.internal_set_url(json.Url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to parse url."})
 		return
