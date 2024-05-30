@@ -4,9 +4,34 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{ .title }}</title>
-        <script defer src="./static/index.js"></script>
+        <link rel="stylesheet" href="./static/index.css" />
     </head>
-    <body>
-        <h1>404</h1>
+    <body class="dark bg-background">
+        <main
+            class="w-full text-center min-h-screen flex flex-col gap-16 items-center justify-center"
+        >
+            <!-- taurl heading -->
+            <article>
+                <h1 class="text-foreground text-5xl font-mono">Taurl</h1>
+                <h5 class="text-foreground/50 text-sm tracking-tight font-mono">Fast url shortner</h1>
+            </article>
+
+            <!-- 404 -->
+            <article>
+                <h1 class="text-foreground text-2xl font-mono">
+                    404 - Page not found
+                </h1>
+            </article>
+
+            <!-- home -->
+            <article>
+                <button
+                    onclick="window.location.href = window.location.origin"
+                    class="bg-primary font-mono text-black hover:bg-primary/90 rounded-lg px-3 py-2 text-sm"
+                >
+                    <p class="text-nowrap">Home</p>
+                </button>
+            </article>
+        </main>
     </body>
 </html>
