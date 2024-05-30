@@ -6,14 +6,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Index page.
+// route: http://host.com
 func (app *App) Index(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{"title": "Taurl"})
 }
 
+// wrapper object for redirection page request queries.
 type RedirectReq struct {
 	Id string `uri:"id" binding:"required"`
 }
 
+// Redirect page.
+// route : http://host.com/hash
 func (app *App) Redirect(c *gin.Context) {
 	var req RedirectReq
 	if err := c.ShouldBindUri(&req); err != nil {

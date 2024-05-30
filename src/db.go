@@ -7,14 +7,17 @@ import (
 	"gorm.io/gorm"
 )
 
+// Models the database.
 type Urls struct {
 	ID          uint
-	ShortendUrl string
-	OriginalUrl string
-	UniqueId    string `gorm:"unique"`
+	ShortendUrl string // http://host.com/hash_xyz
+	OriginalUrl string // http://areallyreallylongexampleurl.com
+	UniqueId    string `gorm:"unique"` // hash_xyz
 	CreatedAt   time.Time
 }
 
+// Inits a new gorm.DB connection to the local db file.
+// Return pointer to the created db instance.
 func setupDbInstance() *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("./db.db"), &gorm.Config{})
 	if err != nil {
@@ -27,21 +30,26 @@ func setupDbInstance() *gorm.DB {
 	return db
 }
 
+// Wrapper for db, this will be attached to global app.
 type DbManager struct {
+	// Pointer to the connection instance.
 	Db *gorm.DB
 	// for in memory caching
 	Cache map[string]Urls // UniqueId: UrlsObject
 }
 
+// Public init function for DbManager
 func SetupDb() DbManager {
 	return DbManager{Db: setupDbInstance(), Cache: make(map[string]Urls)}
 }
 
+// simple wrapper might need it later.
 func (manager *DbManager) get_from_cache(key string) Urls {
 	return manager.Cache[key]
 }
 
 // Gets url from the db using shortend url.
+// considers cache first and also updates it.
 func (manager *DbManager) get_url(shortend_url string) (*Urls, error) {
 	var url Urls = manager.get_from_cache(shortend_url)
 
@@ -60,6 +68,7 @@ func (manager *DbManager) get_url(shortend_url string) (*Urls, error) {
 }
 
 // Gets url from the db using unique id.
+// considers cache first and also updates it.
 func (manager *DbManager) get_url_from_id(uniqueId string) (*Urls, error) {
 	var url Urls = manager.get_from_cache(uniqueId)
 
@@ -78,7 +87,7 @@ func (manager *DbManager) get_url_from_id(uniqueId string) (*Urls, error) {
 	return &url, nil
 }
 
-// sets url in the db.
+// stores a new url in the db and also in the inmemory cache.
 func (manager *DbManager) set_url(original_url string) (*Urls, error) {
 	uniqueId := shorten_url(original_url)
 

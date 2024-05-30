@@ -7,11 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// struct for request queries
 type UrlReq struct {
 	Url string `binding:"required"`
 }
 
-// api endpoint to get an already existing url, can return 404
+// Api endpoint to get an already existing url, can return 404
+// route: http://host.com/api/get?Url={shortendUrl}
 func (app *App) ApiGetUrl(c *gin.Context) {
 	// validate req body.
 	var json UrlReq
@@ -33,7 +35,8 @@ type UrlFromIdReq struct {
 	UniqueId string `binding:"required"`
 }
 
-// api endpoint to get an already existing url using its unique id, can return 404
+// Api endpoint to get an already existing url using its unique id, can return 404
+// route: http://host.com/api/get_from_id?UniqueId={shortendUrl}
 func (app *App) ApiGetUrlFromId(c *gin.Context) {
 	// validate req body.
 	var json UrlFromIdReq
@@ -51,7 +54,9 @@ func (app *App) ApiGetUrlFromId(c *gin.Context) {
 	c.JSON(http.StatusOK, url)
 }
 
-// creates a new Url using given original url
+// Api endpoint to creates a new Url using given original url
+// route: POST: http://host.com/api/set
+// Body: { Url: {originalUrl} }
 func (app *App) ApiSetUrl(c *gin.Context) {
 	// validate req body.
 	var json UrlReq

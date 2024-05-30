@@ -6,9 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Global app.
+// One instance per program instance.
 type App struct {
-	Router *gin.Engine
-	Db     DbManager
+	Router *gin.Engine // reference to the Gin Router.
+	Db     DbManager   // Db Manager.
 }
 
 // Inits an app.
@@ -19,7 +21,7 @@ func (app *App) Init() {
 	app.Router.LoadHTMLGlob("./assets/templates/*")
 }
 
-// mount routes
+// Mount all routes to the app router.
 func (app *App) MountRoutes() {
 	// public user interface endpoints.
 	app.Router.GET("/", app.Index)
@@ -36,7 +38,7 @@ func (app *App) MountRoutes() {
 	}
 }
 
-// creates and inits a new app.
+// Creates and inits a new app.
 func Default() App {
 	app := App{Router: gin.Default(), Db: SetupDb()}
 	app.Init()
@@ -44,7 +46,7 @@ func Default() App {
 	return app
 }
 
-// starts all services.
+// Starts all services.
 func (app *App) Run() {
 	slog.Info("Running app.")
 	app.Router.Run(":3000")
