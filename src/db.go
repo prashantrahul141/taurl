@@ -11,6 +11,7 @@ type Urls struct {
 	ID          uint
 	ShortendUrl string
 	OriginalUrl string
+	UniqueId    string
 	CreatedAt   time.Time
 }
 
@@ -35,8 +36,8 @@ func SetupDb() DbManager {
 
 }
 
-// Gets url from the db.
-func (manager *DbManager) internal_get_url(shortend_url string) (*Urls, error) {
+// Gets url from the db using shortend url.
+func (manager *DbManager) get_url(shortend_url string) (*Urls, error) {
 	var url Urls
 	result := manager.Db.Where("shortend_url = ?", shortend_url).First(&url)
 	if result.Error != nil {
@@ -45,10 +46,21 @@ func (manager *DbManager) internal_get_url(shortend_url string) (*Urls, error) {
 	return &url, nil
 }
 
+// Gets url from the db using unique id.
+func (manager *DbManager) get_url_from_id(uniqueId string) (*Urls, error) {
+	var url Urls
+	result := manager.Db.Where("unique_id = ?", uniqueId).First(&url)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &url, nil
+}
+
 // sets url in the db.
-func (manager *DbManager) internal_set_url(original_url string) (*Urls, error) {
+func (manager *DbManager) set_url(original_url string) (*Urls, error) {
 	// create new url.
-	new_url := Urls{ShortendUrl: shorten_url(original_url), OriginalUrl: original_url}
+	uniqueId := shorten_url(original_url)
+	new_url := Urls{ShortendUrl: "http://localhost:3000/" + uniqueId, OriginalUrl: original_url, UniqueId: uniqueId}
 	result := manager.Db.Create(&new_url)
 	if result.Error != nil {
 		return nil, result.Error
