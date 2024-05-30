@@ -1,7 +1,6 @@
 package src
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,10 +21,9 @@ func (app *App) Redirect(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("req:", req.Id)
 	url, err := app.Db.get_url_from_id(req.Id)
 	if err != nil {
-		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
+		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"title": "404"})
 		return
 	}
 
