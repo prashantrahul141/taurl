@@ -1,8 +1,8 @@
 package main
 
-import "taurl/src"
+import "taurl/app"
 
 func main() {
-	app := src.Default()
+	app := app.Default()
 	app.Run()
 }

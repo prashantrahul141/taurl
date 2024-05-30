@@ -1,0 +1,15 @@
+package app
+
+import (
+	"crypto/md5"
+	"encoding/hex"
+)
+
+func GetMD5Hash(text string) string {
+	hash := md5.Sum([]byte(text))
+	return hex.EncodeToString(hash[:])
+}
+
+func shorten_url(original_url string) string {
+	return GetMD5Hash(original_url)
+}
