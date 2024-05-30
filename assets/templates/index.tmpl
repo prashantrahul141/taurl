@@ -5,11 +5,51 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{ .title }}</title>
         <script defer src="./static/index.js"></script>
+        <link rel="stylesheet" href="./static/index.css" />
     </head>
-    <body>
-        <form id="FORM">
-            <input type="text" name="original_url" />
-            <button type="submit">SHORTIT!</button>
-        </form>
+    <body class="dark bg-background">
+        <main
+            class="w-full text-center min-h-screen flex flex-col gap-16 items-center justify-center"
+        >
+            <!-- taurl heading -->
+            <article>
+                <h1 class="text-foreground text-5xl font-mono">Taurl</h1>
+            </article>
+
+            <!-- form -->
+            <form
+                id="FORM"
+                class="flex items-center justify-center w-full gap-4 flex-col md:flex-row px-4"
+            >
+                <input
+                    class="rounded-lg w-full max-w-md font-mono bg-background border border-border focus:ring-ring text-white text-sm ring-offset-muted file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Enter url..."
+                    type="text"
+                    id="INPUT"
+                    name="original_url"
+                />
+                <button
+                    class="bg-primary font-mono text-black hover:bg-primary/90 rounded-lg px-3 py-2 text-sm"
+                    type="submit"
+                    id="SUBMIT_BUTTON"
+                >
+                    <p class="text-nowrap">short it</p>
+                </button>
+            </form>
+
+            <article
+                id="SHORTEND"
+                class="flex items-center flex-col justify-center w-full gap-4 px-4"
+            >
+                <div
+                    class="rounded-lg cursor-pointer w-full min-h-9 max-w-md overflow-clip font-mono bg-background border border-border"
+                    type="text"
+                >
+                    <p id="SHORTEND_TEXT" class="text-white"></p>
+                </div>
+
+                <p class="text-muted">click to copy to clipboard</p>
+            </article>
+        </main>
     </body>
 </html>
