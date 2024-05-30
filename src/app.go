@@ -25,8 +25,6 @@ func (app *App) MountRoutes() {
 	// public user interface endpoints.
 	app.Router.GET("/", Index)
 
-	// endpoints for htmx
-
 	// endpoint for actual redirection.
 
 	// api routes
