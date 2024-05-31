@@ -39,15 +39,15 @@ func (app *App) MountRoutes() {
 }
 
 // Creates and inits a new app.
-func Default() App {
-	app := App{Router: gin.Default(), Db: SetupDb()}
+func Default(c Configuration) App {
+	app := App{Router: gin.Default(), Db: SetupDb(c.BaseUrl)}
 	app.Init()
 	app.MountRoutes()
 	return app
 }
 
 // Starts all services.
-func (app *App) Run() {
+func (app *App) Run(port string) {
 	slog.Info("Running app.")
-	app.Router.Run(":3000")
+	app.Router.Run(":" + port)
 }
