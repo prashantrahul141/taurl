@@ -2,7 +2,7 @@
 
 Fast url shortner written entirely in Go using the gin framework.
 
-## Provided routes:
+### Provided routes:
 
 #### Retrives an existing shortend url.
 
