@@ -56,6 +56,8 @@ Fast url shortner written entirely in Go using the gin framework.
 
 </details>
 
+#### Sets a new shortend url and returns it.
+
 <details>
  <summary><code>POST</code> <code><b>/api/set</b></code> <code>(Creates and stores a new shortend url.)</code></summary>
 
@@ -76,7 +78,7 @@ Fast url shortner written entirely in Go using the gin framework.
 ##### Example cURL
 
 > ```javascript
->  curl -X GET -H "Content-Type: application/json" http://localhost:3000/api/get_from_id?Url=http://localhost:3000/hash
+>  curl -X POST -H "Content-Type: application/json" --data '{"Url":"https://example.com"}'  http://localhost:3000/api/set
 > ```
 
 </details>
