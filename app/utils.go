@@ -1,15 +1,17 @@
 package app
 
 import (
-	"crypto/md5"
 	"encoding/hex"
+	"hash"
+	"hash/fnv"
 )
 
-func GetMD5Hash(text string) string {
-	hash := md5.Sum([]byte(text))
-	return hex.EncodeToString(hash[:])
+func GetFNVHash(text string) string {
+	var hasher hash.Hash = fnv.New32a()
+	hash := hasher.Sum([]byte(text))
+	return hex.EncodeToString(hash[:4])
 }
 
 func shorten_url(original_url string) string {
-	return GetMD5Hash(original_url)
+	return GetFNVHash(original_url)
 }
