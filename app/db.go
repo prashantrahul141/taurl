@@ -36,11 +36,13 @@ type DbManager struct {
 	Db *gorm.DB
 	// for in memory caching
 	Cache map[string]Urls // UniqueId: UrlsObject
+	// base url while creating new links
+	BaseUrl string
 }
 
 // Public init function for DbManager
-func SetupDb() DbManager {
-	return DbManager{Db: setupDbInstance(), Cache: make(map[string]Urls)}
+func SetupDb(baseUrl string) DbManager {
+	return DbManager{Db: setupDbInstance(), Cache: make(map[string]Urls), BaseUrl: baseUrl}
 }
 
 // simple wrapper might need it later.
@@ -51,7 +53,7 @@ func (manager *DbManager) get_from_cache(key string) Urls {
 // Gets url from the db using shortend url.
 // considers cache first and also updates it.
 func (manager *DbManager) get_url(shortend_url string) (*Urls, error) {
-	var url Urls = manager.get_from_cache(shortend_url)
+	url := manager.get_from_cache(shortend_url)
 
 	// we found from cache
 	if url.ID != 0 {
@@ -70,7 +72,7 @@ func (manager *DbManager) get_url(shortend_url string) (*Urls, error) {
 // Gets url from the db using unique id.
 // considers cache first and also updates it.
 func (manager *DbManager) get_url_from_id(uniqueId string) (*Urls, error) {
-	var url Urls = manager.get_from_cache(uniqueId)
+	url := manager.get_from_cache(uniqueId)
 
 	// we found from cache
 	if url.ID != 0 {
@@ -91,7 +93,7 @@ func (manager *DbManager) get_url_from_id(uniqueId string) (*Urls, error) {
 func (manager *DbManager) set_url(original_url string) (*Urls, error) {
 	uniqueId := shorten_url(original_url)
 
-	new_url := Urls{ShortendUrl: "http://localhost:3000/" + uniqueId, OriginalUrl: original_url, UniqueId: uniqueId}
+	new_url := Urls{ShortendUrl: manager.BaseUrl + uniqueId, OriginalUrl: original_url, UniqueId: uniqueId}
 	result := manager.Db.Create(&new_url)
 	if result.Error != nil {
 		return nil, result.Error
