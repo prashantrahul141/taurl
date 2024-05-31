@@ -93,6 +93,21 @@ func (manager *DbManager) get_url_from_id(uniqueId string) (*Urls, error) {
 func (manager *DbManager) set_url(original_url string) (*Urls, error) {
 	uniqueId := shorten_url(original_url)
 
+	// if it already exists in the cache, just return it.
+	url := manager.get_from_cache(uniqueId)
+
+	// we found from cache
+	if url.ID != 0 {
+		return &url, nil
+	}
+
+	// if it already exists in the db, just return it.
+	urlDb, err := manager.get_url_from_id(uniqueId)
+	if err == nil {
+		// if we found in the db
+		return urlDb, nil
+	}
+
 	new_url := Urls{ShortendUrl: manager.BaseUrl + uniqueId, OriginalUrl: original_url, UniqueId: uniqueId}
 	result := manager.Db.Create(&new_url)
 	if result.Error != nil {
