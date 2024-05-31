@@ -28,7 +28,7 @@ func (app *App) Redirect(c *gin.Context) {
 
 	url, err := app.Db.get_url_from_id(req.Id)
 	if err != nil {
-		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"title": "404"})
+		c.HTML(http.StatusNotFound, "404.tmpl", gin.H{"title": "404 - Page not found"})
 		return
 	}
 
