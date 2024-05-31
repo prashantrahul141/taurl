@@ -74,7 +74,7 @@ func (app *App) ApiSetUrl(c *gin.Context) {
 
 	new_url, err := app.Db.set_url(json.Url)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to parse url."})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to set db."})
 		return
 	}
 
